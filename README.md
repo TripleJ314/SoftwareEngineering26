@@ -5,3 +5,4 @@ The compute engine will find the largest prime number that is less than a given 
 Example:
 For the given input: 10:
 The system will output: 7
+<img width="900" height="484" alt="Screenshot (39)" src="https://github.com/user-attachments/assets/4e9f16f5-2372-40d0-997b-f43e46657f67" />
