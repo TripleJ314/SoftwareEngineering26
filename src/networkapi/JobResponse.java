@@ -1,5 +1,5 @@
 package networkapi;
 
 public interface JobResponse {
-	JobResponseCode getResponseCode();
+    JobResponseCode getResponseCode();
 }
