@@ -6,7 +6,7 @@ import processapi.IntegerData;
 public class ComputeProcessApiPrototype {
     
     @ConceptualAPIPrototype
-    public void prototype (ComputeProcessApi process) {
+    public void prototype(ComputeProcessApi process) {
         // Initialize the job
         process.initialize();
         
