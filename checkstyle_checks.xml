@@ -22,7 +22,12 @@
            default="checkstyle-suppressions.xml" />
     <property name="optional" value="true"/>
   </module>
-
+  <module name="LineLength">
+    <property name="fileExtensions" value="java"/>
+    <property name="max" value="250"/>
+    <property name="ignorePattern"
+             value="^package.*|^import.*|href\s*=\s*&quot;[^&quot;]*&quot;|http://|https://|ftp://"/>
+  </module>
   <module name="TreeWalker">
     <module name="OuterTypeFilename"/>
     <module name="IllegalTokenText">
@@ -154,14 +159,6 @@
       <property name="tokens"
                value="CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF,
                     SUPER_CTOR_CALL, ENUM_CONSTANT_DEF, RECORD_DEF"/>
-    </module>
-	<module name="Indentation">
-      <property name="basicOffset" value="4"/>
-      <property name="braceAdjustment" value="0"/>
-      <property name="caseIndent" value="4"/>
-      <property name="throwsIndent" value="8"/>
-      <property name="lineWrappingIndentation" value="8"/>
-      <property name="arrayInitIndent" value="4"/>
     </module>
     <module name="AnnotationLocation">
       <property name="id" value="AnnotationLocationMostCases"/>
