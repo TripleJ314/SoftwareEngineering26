@@ -7,8 +7,8 @@ import processapi.DataOutputDestination;
 import processapi.DataStoreApi;
 
 public class ComputeProcessApiPrototype {
- 
     @ConceptualAPIPrototype
+    
     public void prototype(ComputeProcessApi process, DataStoreApi dataStore) {
         // Create and set input and output sources
     	DataInputSource inputSource = new DataInputSource() {};
