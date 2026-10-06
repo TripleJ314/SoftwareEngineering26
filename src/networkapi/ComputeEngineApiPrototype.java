@@ -7,14 +7,14 @@ public class ComputeEngineApiPrototype {
     
     public void prototype(ComputeEngineApi computeEngine) {
         //  Specify the input source
-        InputSource input;
+        InputSource input = new InputSource() {};
         // Specify the output source
-        OutputDestination output;
+        OutputDestination output = new OutputDestination() {};
         // Specify the output delimiters
         // If not specified, defaults are used
-        Delimiters delimiter;
+        Delimiters delimiter = new Delimiters() {};
         // Create JobRequest
-        JobRequest request = null;
+        JobRequest request = new JobRequest(input, output, delimiter);
         
         // Run job
         JobResponse response = computeEngine.runJob(request);

@@ -1,22 +1,23 @@
 package conceptualapi;
 
 import project.annotations.ConceptualAPIPrototype;
-import processapi.IntegerData;
+import jobhandler.JobHandler;
+import processapi.DataInputSource;
+import processapi.DataOutputDestination;
 
 public class ComputeProcessApiPrototype {
     
-    @ConceptualAPIPrototype
+	@ConceptualAPIPrototype
     public void prototype(ComputeProcessApi process) {
-        // Initialize the job
-        process.initialize();
-        
-        // Read data
-        IntegerData data = process.read();
-        
-        // Perform computation(LargestPrimeLessThanN)
-        // TBD
-        
-        // Write 
-        process.write(data);
+        // Create and set input and output sources
+    	DataInputSource inputSource = new DataInputSource() {};
+    	DataOutputDestination outputDestination = new DataOutputDestination() {};
+ 
+    	// Create new JobHandler with data store and compute engine
+    	JobHandler jobHandler = new JobHandler(process.getDataStore(), process);
+ 
+    	// Run job
+    	jobHandler.runJob(inputSource, outputDestination);
     }
 }
+

@@ -1,16 +1,13 @@
 package conceptualapi;
 
 import project.annotations.ConceptualAPI;
+import processapi.DataStoreApi;
 import processapi.IntegerData;
 
 @ConceptualAPI
 public interface ComputeProcessApi {
-    // Initialize job
-    void initialize();
+    IntegerData compute(IntegerData input);
     
-    // Read job
-    IntegerData read();
-    
-    // Writing job
-    void write(IntegerData data);
+    DataStoreApi getDataStore();
 }
+

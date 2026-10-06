@@ -8,10 +8,10 @@ public class DataStoreApiPrototype {
     public void prototype(DataStoreApi process) {
         
         // Specify the input source
-        DataInputSource inputSource = null;
+        DataInputSource inputSource = new DataInputSource() {};
         
         // Specify output destination
-        DataOutputDestination outputDestination = null;
+        DataOutputDestination outputDestination = new DataOutputDestination() {};
         
         // Read integers from the data storage system
         IntegerData data = process.read(inputSource);
