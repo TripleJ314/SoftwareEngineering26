@@ -1,6 +1,6 @@
 package smoketests;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.Test;
@@ -31,8 +31,6 @@ public class TestComputeEngineApi {
 		
 		// Check the response of the compute engine
 		// For the tests this should fail/not pass
-		if (response == null) {
-			fail();
-		}
+		assertNotNull(response);
 	}
 }

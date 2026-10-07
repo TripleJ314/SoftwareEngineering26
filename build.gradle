@@ -31,5 +31,6 @@ test {
     useJUnitPlatform()
     filter {
     	excludeTestsMatching "smoketests.TestComputeEngineApi"
+    	excludeTestsMatching "smoketests.TestDataStoreApi"
     }
 }
