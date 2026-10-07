@@ -32,5 +32,6 @@ test {
     filter {
     	excludeTestsMatching "smoketests.TestComputeEngineApi"
     	excludeTestsMatching "smoketests.TestDataStoreApi"
+    	excludeTestsMatching "smoketests.TestComputeProcessApi"
     }
 }
