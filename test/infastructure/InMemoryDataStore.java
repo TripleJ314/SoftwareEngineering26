@@ -15,7 +15,7 @@ public class InMemoryDataStore implements DataStoreApi{
 		InMemoryInput inputSource = (InMemoryInput) input;
 		
 		// Returns an input list wrapped in an IntegerData
-		return new InMemoryIntegerData (inputSource.getInput());
+		return new InMemoryIntegerData(inputSource.getInput());
 	}
 
 	@Override
