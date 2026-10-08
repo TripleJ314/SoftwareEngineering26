@@ -3,8 +3,9 @@ package infastructure;
 import java.util.List;
 
 import networkapi.InputSource;
+import processapi.DataInputSource;
 
-public class InMemoryInput implements InputSource {
+public class InMemoryInput implements InputSource, DataInputSource {
 	
 	// Stores the input integers for tests
 	private final List<Integer> input;

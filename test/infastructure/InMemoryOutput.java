@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import networkapi.OutputDestination;
+import processapi.DataOutputDestination;
 
-public class InMemoryOutput implements OutputDestination{
+public class InMemoryOutput implements OutputDestination, DataOutputDestination{
 	// Stores the output strings for writing by DataStore
 	private final List<String> output;
 	

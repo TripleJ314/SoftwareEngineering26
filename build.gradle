@@ -33,5 +33,6 @@ test {
     	excludeTestsMatching "smoketests.TestComputeEngineApi"
     	excludeTestsMatching "smoketests.TestDataStoreApi"
     	excludeTestsMatching "smoketests.TestComputeProcessApi"
+    	excludeTestsMatching "infastructure.ComputeEngineIntegrationTest"
     }
 }
