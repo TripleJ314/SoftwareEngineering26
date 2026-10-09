@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import org.junit.jupiter.api.Test;
 
 import emptyimplements.ComputeEngineApiImpl;
+import jobhandler.JobHandler;
 import networkapi.Delimiters;
 import networkapi.InputSource;
 import networkapi.JobRequest;
@@ -15,17 +16,23 @@ import networkapi.OutputDestination;
 public class TestComputeEngineApi {
 	@Test
 	public void testRunJob() {
-		// Create network api implementation
-		ComputeEngineApiImpl computeEngine = new ComputeEngineApiImpl() {};
+		// Mock JobHandler for the ComputeEngine
+		JobHandler job = mock(JobHandler.class);
 		
-		// Mock the interfaces needed for JobRequest
+		// Mock the InputSource and OutputDestination
+		// interfaces needed for JobRequest
 		InputSource input = mock(InputSource.class);
 		OutputDestination output = mock(OutputDestination.class);
+		
+		// Mock the output Delimiters
 		Delimiters delimiters = mock(Delimiters.class);
+		
+		// Create network api implementation
+		ComputeEngineApiImpl computeEngine = new ComputeEngineApiImpl(job) {};
 		
 		// Create the JobRequest the user send to the compute engine
 		JobRequest request = new JobRequest(input, output, delimiters);
-	
+				
 		// Call Network API
 		JobResponse response = computeEngine.runJob(request);
 		
