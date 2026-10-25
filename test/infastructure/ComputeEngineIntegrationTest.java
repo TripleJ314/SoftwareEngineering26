@@ -28,7 +28,7 @@ public class ComputeEngineIntegrationTest {
 		InMemoryDataStore dataStore = new InMemoryDataStore();
 		
 		// Create the Conceptual Api implementation for test
-		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl();
+		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl(dataStore);
 		
 		// Create JobHandler using the Process and Conceptual API
 		JobHandler job = new JobHandler(dataStore, computeProcess);
