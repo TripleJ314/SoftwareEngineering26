@@ -21,16 +21,13 @@ public class InMemoryDataStore implements DataStoreApi{
 	@Override
 	public void write(IntegerData data, DataOutputDestination output) {
 		
-		// Casts the general IntegerData data to access its store integers
-		InMemoryIntegerData outputData = (InMemoryIntegerData) data;
-		
 		// Casts the general DataOutputDestination
 		// to the InMemoryOutput for tests only
 		InMemoryOutput outputDestination = (InMemoryOutput) output;
 		
 		// Iterate through the list and write it to the output list
 		// while converting each Integer to a String
-		for (Integer integer : outputData.getIntegers()) {
+		for (Integer integer : data.getIntegers()) {
 			outputDestination.getOutput().add(integer.toString());
 		}
 	}
