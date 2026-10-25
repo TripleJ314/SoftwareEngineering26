@@ -55,13 +55,18 @@ public class TestComputeProcessApi {
 	public void testLesserLargestPrime() {
 		// Mock the data storage dependency
 		DataStoreApi dataStore = mock(DataStoreApi.class);
-				
+		
+		// Create the Conceptual api implementation(computation component)
 		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl(dataStore);
 		
+		// Provide input integers
 		IntegerData input = new ListIntegerData(List.of(1, 10, 25));
 		
+		// Run and store the ouput of LesserLargestPrime 
+		// computation for each input integer
 		IntegerData results = computeProcess.compute(input);
 		
+		// Verify the largest prime less than input is correct
 		assertEquals(List.of(0, 7, 23), results.getIntegers());
 	}
 }

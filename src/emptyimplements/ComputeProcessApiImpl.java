@@ -9,8 +9,10 @@ import processapi.IntegerData;
 import processapi.ListIntegerData;
 
 public class ComputeProcessApiImpl implements ComputeProcessApi {
+	//Stores the data store component given through constructor
 	private final DataStoreApi dataStore;
 	
+	// Constructor to initialize the computation component with its data store dependency
 	public ComputeProcessApiImpl(DataStoreApi dataStore) {
 		this.dataStore = dataStore;
 	}
@@ -35,6 +37,7 @@ public class ComputeProcessApiImpl implements ComputeProcessApi {
 
 	@Override
 	public DataStoreApi getDataStore() {
+		// Returns data store component given through constructor
 		return dataStore;
 	}
 	
@@ -43,7 +46,8 @@ public class ComputeProcessApiImpl implements ComputeProcessApi {
 		if (num < 2) {
 			return false;
 		}
-		
+		// Check for divisors up to the square root of the num
+		// and if num has a divisor other than 1 or num, than its not prime
 		for (int divisor = 2; divisor <= num / divisor; divisor++) {
 			if (num % divisor == 0) {
 				return false;
@@ -53,8 +57,10 @@ public class ComputeProcessApiImpl implements ComputeProcessApi {
 	}
 	
 	public int lesserLargestPrime(int num) {
+		// Default: 0; for when no smaller prime exists
 		int result = 0;
 		
+		// Update the result when a larger prime is found
 		for (int i = 2; i < num; i++) {
 			if(isPrime(i)) {
 				result = i;
