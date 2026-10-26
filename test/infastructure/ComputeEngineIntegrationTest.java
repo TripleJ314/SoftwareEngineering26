@@ -28,7 +28,7 @@ public class ComputeEngineIntegrationTest {
 		InMemoryDataStore dataStore = new InMemoryDataStore();
 		
 		// Create the Conceptual Api implementation for test
-		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl(dataStore);
+		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl();
 		
 		// Create JobHandler using the Process and Conceptual API
 		JobHandler job = new JobHandler(dataStore, computeProcess);
@@ -40,11 +40,15 @@ public class ComputeEngineIntegrationTest {
 		JobRequest request = new JobRequest(input, output, null);
 		
 		// Execute JobHandler through the Network Api
-		computeEngine.runJob(request);
-		
+		JobResponse response = computeEngine.runJob(request);
+		//Verify the job returns a response
+		assertNotNull(response);
+				
+		// Check the response of the compute engine
+		// Verify the input types create intended response
+		assertEquals(JobResponseCode.SUCCESS, response.getResponseCode(request));
+			
 		// Verify that the output matches the computation results
-		// This is made to fail test as actual computation component
-		// has yet to be implemented
-		assertEquals(List.of("No lesser prime number", "7", "23"), output.getOutput());
+		assertEquals(List.of("0", "7", "23"), output.getOutput());
 	}
 }
