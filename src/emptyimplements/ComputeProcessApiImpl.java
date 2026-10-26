@@ -4,18 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import conceptualapi.ComputeProcessApi;
-import processapi.DataStoreApi;
 import processapi.IntegerData;
 import processapi.ListIntegerData;
 
 public class ComputeProcessApiImpl implements ComputeProcessApi {
-	//Stores the data store component given through constructor
-	private final DataStoreApi dataStore;
-	
-	// Constructor to initialize the computation component with its data store dependency
-	public ComputeProcessApiImpl(DataStoreApi dataStore) {
-		this.dataStore = dataStore;
-	}
 	
 	@Override
 	public IntegerData compute(IntegerData input) {
@@ -33,12 +25,6 @@ public class ComputeProcessApiImpl implements ComputeProcessApi {
 		
 		// Return results wrapped in an IntegerData Implementation
 		return new ListIntegerData(results);
-	}
-
-	@Override
-	public DataStoreApi getDataStore() {
-		// Returns data store component given through constructor
-		return dataStore;
 	}
 	
 	public boolean isPrime(int num) {

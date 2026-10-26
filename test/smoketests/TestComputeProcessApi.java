@@ -2,7 +2,6 @@ package smoketests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,11 +18,9 @@ public class TestComputeProcessApi {
 	
 	@Test
 	public void testCompute() {
-		// Mock the data storage dependency
-		DataStoreApi dataStore = mock(DataStoreApi.class);
 		
 		// Create Conceptual api implementation
-		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl(dataStore);
+		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl();
 		
 		// Mock the IntegerData that is given to compute component
 		IntegerData input = mock(IntegerData.class);
@@ -40,24 +37,10 @@ public class TestComputeProcessApi {
 	}
 	
 	@Test
-	public void testGetDataStore() {
-		// Mock the data storage dependency
-		DataStoreApi dataStore = mock(DataStoreApi.class);
-		
-		// Create Conceptual api implementation
-		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl(dataStore);
-		
-		// Verify the same data store is returned
-		assertSame(dataStore, computeProcess.getDataStore());
-	}
-	
-	@Test
 	public void testLesserLargestPrime() {
-		// Mock the data storage dependency
-		DataStoreApi dataStore = mock(DataStoreApi.class);
 		
 		// Create the Conceptual api implementation(computation component)
-		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl(dataStore);
+		ComputeProcessApiImpl computeProcess = new ComputeProcessApiImpl();
 		
 		// Provide input integers
 		IntegerData input = new ListIntegerData(List.of(1, 10, 25));

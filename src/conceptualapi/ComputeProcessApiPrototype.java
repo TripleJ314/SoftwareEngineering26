@@ -1,23 +1,24 @@
 package conceptualapi;
 
 import project.annotations.ConceptualAPIPrototype;
-import jobhandler.JobHandler;
-import processapi.DataInputSource;
-import processapi.DataOutputDestination;
+
+import java.util.List;
+
+import processapi.IntegerData;
+import processapi.ListIntegerData;
 
 public class ComputeProcessApiPrototype {
     
 	@ConceptualAPIPrototype
     public void prototype(ComputeProcessApi process) {
-        // Create and set input and output sources
-    	DataInputSource inputSource = new DataInputSource() {};
-    	DataOutputDestination outputDestination = new DataOutputDestination() {};
+    	//Create IntegerData to represent the input from DataStore
+		IntegerData input = new ListIntegerData(List.of(1,10,25));
  
     	// Create new JobHandler with data store and compute engine
-    	JobHandler jobHandler = new JobHandler(process.getDataStore(), process);
+    	IntegerData result = process.compute(input);
  
-    	// Run job
-    	jobHandler.runJob(inputSource, outputDestination);
+    	// Store returned computed results
+    	List<Integer> computedResults = result.getIntegers();
     }
 }
 
