@@ -12,7 +12,7 @@ public class ComputeEngineApiPrototype {
         OutputDestination output = new OutputDestination() {};
         // Specify the output delimiters
         // If not specified, defaults are used
-        Delimiters delimiter = new Delimiters() {};
+        DelimitersImpl delimiter = new DelimitersImpl(null);
         // Create JobRequest
         JobRequest request = new JobRequest(input, output, delimiter);
         

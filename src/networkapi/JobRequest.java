@@ -10,7 +10,11 @@ public class JobRequest {
 					Delimiters delimiters) {
 		this.inputSource = inputSource;
 		this.outputDestination = outputDestination;
-		this.delimiters= delimiters;
+		if (delimiters == null) {
+			this.delimiters = new DelimitersImpl(null);
+		} else {
+			this.delimiters = delimiters;
+		}
 	}
 	
 	public InputSource getInputSource() {
