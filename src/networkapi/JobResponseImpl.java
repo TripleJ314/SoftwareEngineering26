@@ -1,8 +1,4 @@
-package emptyimplements;
-
-import networkapi.JobRequest;
-import networkapi.JobResponse;
-import networkapi.JobResponseCode;
+package networkapi;
 
 public class JobResponseImpl implements JobResponse {
 	// Store the requested computation's job status

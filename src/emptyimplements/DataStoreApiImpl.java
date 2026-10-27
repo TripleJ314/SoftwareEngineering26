@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import networkapi.Delimiters;
 import processapi.DataInputSource;
 import processapi.DataOutputDestination;
 import processapi.DataStoreApi;
@@ -40,7 +41,7 @@ public class DataStoreApiImpl implements DataStoreApi {
 	}
 
 	@Override
-	public void write(IntegerData data, DataOutputDestination output) {
+	public void write(IntegerData data, DataOutputDestination output, Delimiters delimiter) {
 		// Convert general output source to FileOutput source
 		FileOutput fileOutput = (FileOutput) output;
 		
@@ -53,7 +54,7 @@ public class DataStoreApiImpl implements DataStoreApi {
 		}
 		
 		// Combine all results into one line with specified delimiters
-		String outputToWrite = String.join(fileOutput.getDelimiter(), results);
+		String outputToWrite = String.join(delimiter.getFieldDelimiter(), results);
 		
 		try {
 			Files.writeString(fileOutput.getPath(), outputToWrite);

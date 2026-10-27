@@ -5,4 +5,6 @@ public interface Delimiters {
     // If user doesn't specify their own
     String DEFAULT_FIELD = ",";
     String DEFAULT_RECORD = "\n";
+    
+    String getFieldDelimiter();
 }

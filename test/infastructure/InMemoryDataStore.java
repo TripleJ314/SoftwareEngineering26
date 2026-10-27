@@ -1,5 +1,6 @@
 package infastructure;
 
+import networkapi.Delimiters;
 import processapi.DataInputSource;
 import processapi.DataOutputDestination;
 import processapi.DataStoreApi;
@@ -19,7 +20,7 @@ public class InMemoryDataStore implements DataStoreApi{
 	}
 
 	@Override
-	public void write(IntegerData data, DataOutputDestination output) {
+	public void write(IntegerData data, DataOutputDestination output, Delimiters delimiter) {
 		
 		// Casts the general DataOutputDestination
 		// to the InMemoryOutput for tests only

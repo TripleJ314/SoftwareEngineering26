@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import emptyimplements.ComputeEngineApiImpl;
 import emptyimplements.ComputeProcessApiImpl;
 import jobhandler.JobHandler;
+import networkapi.Delimiters;
+import networkapi.DelimitersImpl;
 import networkapi.JobRequest;
 import networkapi.JobResponse;
 import networkapi.JobResponseCode;
@@ -36,11 +38,16 @@ public class ComputeEngineIntegrationTest {
 		// Create the Network Api implementation for test
 		ComputeEngineApiImpl computeEngine = new ComputeEngineApiImpl(job);
 		
+		// Create the output delimiter without specification
+		// for default delimiter 
+		Delimiters delimiter = new DelimitersImpl(null);
+		
 		// Create a job request without any specified delimiters
-		JobRequest request = new JobRequest(input, output, null);
+		JobRequest request = new JobRequest(input, output, delimiter);
 		
 		// Execute JobHandler through the Network Api
 		JobResponse response = computeEngine.runJob(request);
+		
 		//Verify the job returns a response
 		assertNotNull(response);
 				

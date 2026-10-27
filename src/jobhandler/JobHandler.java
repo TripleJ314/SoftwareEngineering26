@@ -1,6 +1,7 @@
 package jobhandler;
 
 import conceptualapi.ComputeProcessApi;
+import networkapi.Delimiters;
 import processapi.DataInputSource;
 import processapi.DataOutputDestination;
 import processapi.DataStoreApi;
@@ -15,12 +16,12 @@ public class JobHandler {
 		this.computeProcess = computeProcess;
 	}
 	
-	public void runJob(DataInputSource inputSource, DataOutputDestination outputDestination) {
+	public void runJob(DataInputSource inputSource, DataOutputDestination outputDestination, Delimiters delimiter) {
 		IntegerData input = dataStore.read(inputSource);
 		
 		IntegerData result = computeProcess.compute(input);
 		
-		dataStore.write(result, outputDestination);
+		dataStore.write(result, outputDestination, delimiter);
 	}
 }
 

@@ -5,6 +5,7 @@ import networkapi.ComputeEngineApi;
 import networkapi.JobRequest;
 import networkapi.JobResponse;
 import networkapi.JobResponseCode;
+import networkapi.JobResponseImpl;
 import processapi.DataInputSource;
 import processapi.DataOutputDestination;
 
@@ -33,7 +34,7 @@ public class ComputeEngineApiImpl implements ComputeEngineApi {
 			DataOutputDestination output = (DataOutputDestination) request.getOutputDest();
 			
 			// Run job with JobHandler
-			job.runJob(input, output);
+			job.runJob(input, output, request.getDelimiter());
 			
 			// Returns success response after job finishes
 			return new JobResponseImpl(JobResponseCode.SUCCESS);

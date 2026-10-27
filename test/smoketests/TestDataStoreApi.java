@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import emptyimplements.DataStoreApiImpl;
+import networkapi.Delimiters;
+import networkapi.DelimitersImpl;
 import processapi.FileInput;
 import processapi.FileOutput;
 import processapi.IntegerData;
@@ -52,13 +54,16 @@ public class TestDataStoreApi {
 		Path outputPath = tempFile.resolve("output.txt");
 		
 		// Create a file with output destination path and delimiters
-		FileOutput outputFile = new FileOutput(outputPath, ",");
+		FileOutput outputFile = new FileOutput(outputPath);
+		
+		// Specify delimiter for output
+		Delimiters delimiter = new DelimitersImpl(",");
 		
 		// Create IntegerData containing computed integers
 		IntegerData data = new ListIntegerData(List.of(0, 7, 23));
 		
 		// Write the computed results to the output file
-		dataStore.write(data, outputFile);
+		dataStore.write(data, outputFile, delimiter);
 		
 		// Verify the output matches the intended format
 		assertEquals("0,7,23", Files.readString(outputPath));
@@ -73,13 +78,16 @@ public class TestDataStoreApi {
 		Path outputPath = tempFile.resolve("outputDefault.txt");
 		
 		// Create a file with output destination path and no delimiters
-		FileOutput outputFile = new FileOutput(outputPath, null);
+		FileOutput outputFile = new FileOutput(outputPath);
+		
+		// No delimiter specified for output
+		Delimiters delimiter = new DelimitersImpl(null);
 		
 		// Create IntegerData containing computed integers
 		IntegerData data = new ListIntegerData(List.of(0, 7, 23));
 		
 		// Write the computed results to the output file
-		dataStore.write(data, outputFile);
+		dataStore.write(data, outputFile, delimiter);
 		
 		// Verify the output matches the intended format
 		assertEquals("0,7,23", Files.readString(outputPath));
