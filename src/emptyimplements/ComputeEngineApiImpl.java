@@ -16,19 +16,22 @@ public class ComputeEngineApiImpl implements ComputeEngineApi {
 	
 	// Constructor for connecting the JobHandler in network api tests.
 	public ComputeEngineApiImpl(JobHandler job) {
+		if (job == null) {
+			throw new IllegalArgumentException("JobHandler cannot be null");
+		}
 		this.job = job;
 	}
 	
 	// Run JobRequest and return job completion status
 	@Override
 	public JobResponse runJob(JobRequest request) {
-		// Check request and input/output sources are valid
-		if (request == null 
-				|| !(request.getInputSource() instanceof DataInputSource)
-				|| !(request.getOutputDest() instanceof DataOutputDestination)) {
-			return new JobResponseImpl(JobResponseCode.INVALID_INPUT);
-		}
 		try {
+			// Check request and input/output sources are valid
+			if (request == null 
+					|| !(request.getInputSource() instanceof DataInputSource)
+					|| !(request.getOutputDest() instanceof DataOutputDestination)) {
+				return new JobResponseImpl(JobResponseCode.INVALID_INPUT);
+			}
 			// Convert the Network APi sources to Process API source type
 			DataInputSource input = (DataInputSource) request.getInputSource();
 			DataOutputDestination output = (DataOutputDestination) request.getOutputDest();
