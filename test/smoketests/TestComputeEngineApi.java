@@ -2,7 +2,11 @@ package smoketests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.withSettings;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +18,8 @@ import networkapi.JobRequest;
 import networkapi.JobResponse;
 import networkapi.JobResponseCode;
 import networkapi.OutputDestination;
+import processapi.DataInputSource;
+import processapi.DataOutputDestination;
 
 public class TestComputeEngineApi {
 	@Test
@@ -62,5 +68,41 @@ public class TestComputeEngineApi {
 		
 		// Verify the null request returns INVALID_INPUT
 		assertEquals(JobResponseCode.INVALID_INPUT, response.getResponseCode(null));
+	}
+	
+	@Test
+	public void testNullJobHandler() {
+		// Verify that the constructor rejects a null JobHandler
+		assertThrows(IllegalArgumentException.class, () -> {
+			new ComputeEngineApiImpl(null);
+		});
+	}
+	
+	@Test
+	public void testJobHandlerException() {
+		// Mock JobHandler
+		JobHandler job = mock(JobHandler.class);
+		
+		// Mock delimiter, input and output
+		InputSource input = mock(InputSource.class, withSettings().extraInterfaces(DataInputSource.class));
+		OutputDestination output = mock(OutputDestination.class, withSettings().extraInterfaces(DataOutputDestination.class));
+		Delimiters delimiter = mock(Delimiters.class);
+		
+		// Simulate an exception thrown in JobHandler
+		doThrow(new IllegalStateException("Simulated failure"))
+		.when(job).runJob(any(), any(), any());
+		
+		// Create ComputeEngineApi
+		ComputeEngineApiImpl computeEngine = new ComputeEngineApiImpl(job);
+		
+		// Create JobRequest with mocked parameters
+		JobRequest request = new JobRequest(input, output, delimiter);
+		
+		// Execute the job and store response
+		JobResponse response = computeEngine.runJob(request);
+		
+		// verify exception was handled and return as FAILURE
+		assertNotNull(response);
+		assertEquals(JobResponseCode.FAILURE, response.getResponseCode(request));
 	}
 }
