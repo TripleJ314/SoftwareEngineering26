@@ -11,14 +11,28 @@ public class ComputeProcessApiImpl implements ComputeProcessApi {
 	
 	@Override
 	public IntegerData compute(IntegerData input) {
+		// verifies the IntegerData input is not null
+		if (input == null) {
+			throw new IllegalArgumentException("IntegerData input cannot be null");
+		}
 		// Create and Retrieve the list of inputed integers
 		List<Integer> inputNums = input.getIntegers();
+		
+		// verifies the list is not null
+		if (inputNums == null) {
+			throw new IllegalArgumentException("Input integer list cannot be null");
+		}
 		
 		// Create a list to store the computed results
 		List<Integer> results = new ArrayList<>();
 		
 		// Find and store the largest prime less than each integer 
 		for (Integer num : inputNums) {
+			
+			// verifies that each integer is not null
+			if (num == null) {
+				throw new IllegalArgumentException("Input integer cannot be null");
+			}
 			int largestPrime = lesserLargestPrime(num);
 			results.add(largestPrime);
 		}
@@ -29,6 +43,7 @@ public class ComputeProcessApiImpl implements ComputeProcessApi {
 	
 	public boolean isPrime(int num) {
 		// Verify input has a lesser prime available
+		// No other validation is required: values below 2 are not prime
 		if (num < 2) {
 			return false;
 		}
@@ -43,7 +58,8 @@ public class ComputeProcessApiImpl implements ComputeProcessApi {
 	}
 	
 	public int lesserLargestPrime(int num) {
-		// Default: 0; for when no smaller prime exists
+		// No additional validation is required: all int values are accepted
+		// Default: 0, for when no smaller prime exists for values <= 2
 		int result = 0;
 		
 		// Update the result when a larger prime is found
