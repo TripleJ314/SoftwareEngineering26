@@ -2,6 +2,8 @@ package smoketests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.io.TempDir;
 import emptyimplements.DataStoreApiImpl;
 import networkapi.Delimiters;
 import networkapi.DelimitersImpl;
+import processapi.DataInputSource;
+import processapi.DataOutputDestination;
 import processapi.FileInput;
 import processapi.FileOutput;
 import processapi.IntegerData;
@@ -91,5 +95,57 @@ public class TestDataStoreApi {
 		
 		// Verify the output matches the intended format
 		assertEquals("0,7,23", Files.readString(outputPath));
+	}
+	
+	@Test
+	public void testNullInput() {
+		// Create process api implementation
+		DataStoreApiImpl dataStore = new DataStoreApiImpl();
+		
+		assertThrows(IllegalArgumentException.class, () -> {
+			dataStore.read(null);
+		});
+	}
+	
+	@Test
+	public void testNullOutput() {
+		// Create process api implementation
+		DataStoreApiImpl dataStore = new DataStoreApiImpl();
+		
+		// Mock dependencies
+		IntegerData data = mock(IntegerData.class);
+		Delimiters delimiter = mock(Delimiters.class);
+		
+		assertThrows(IllegalArgumentException.class, () -> {
+			dataStore.write(data, null, delimiter);
+		});
+	}
+	
+	@Test
+	public void testUnsupportedInputSource() {
+		// Create process api implementation
+		DataStoreApiImpl dataStore = new DataStoreApiImpl();
+		
+		// Mock dependency
+		DataInputSource input = mock(DataInputSource.class);
+				
+		assertThrows(IllegalArgumentException.class, () -> {
+			dataStore.read(input);
+		});
+	}
+	
+	@Test
+	public void testUnsupportedOuputDestination() {
+		// Create process api implementation
+		DataStoreApiImpl dataStore = new DataStoreApiImpl();
+		
+		// Mock dependency
+		DataOutputDestination output = mock(DataOutputDestination.class);
+		IntegerData data = mock(IntegerData.class);
+		Delimiters delimiter = mock(Delimiters.class);
+		
+		assertThrows(IllegalArgumentException.class, () -> {
+			dataStore.write(data, output, delimiter);
+		});
 	}
 }
