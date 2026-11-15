@@ -37,8 +37,11 @@ public class ComputeEngineApiImpl implements ComputeEngineApi {
 			DataOutputDestination output = (DataOutputDestination) request.getOutputDest();
 			
 			// Run job with JobHandler
-			job.runJob(input, output, request.getDelimiter());
+			boolean status = job.runJob(input, output, request.getDelimiter());
 			
+			if (status == false) {
+				return new JobResponseImpl(JobResponseCode.FAILURE);
+			}
 			// Returns success response after job finishes
 			return new JobResponseImpl(JobResponseCode.SUCCESS);
 			

@@ -1,8 +1,10 @@
 package smoketests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.nio.file.Files;
@@ -66,8 +68,9 @@ public class TestDataStoreApi {
 		// Create IntegerData containing computed integers
 		IntegerData data = new ListIntegerData(List.of(0, 7, 23));
 		
-		// Write the computed results to the output file
-		dataStore.write(data, outputFile, delimiter);
+		// Verify the written computed results to the output file
+		// return a true status for success
+		assertTrue(dataStore.write(data, outputFile, delimiter));
 		
 		// Verify the output matches the intended format
 		assertEquals("0,7,23", Files.readString(outputPath));
@@ -102,9 +105,8 @@ public class TestDataStoreApi {
 		// Create process api implementation
 		DataStoreApiImpl dataStore = new DataStoreApiImpl();
 		
-		assertThrows(IllegalArgumentException.class, () -> {
-			dataStore.read(null);
-		});
+		// Verify read() returns a null value
+		assertNull(dataStore.read(null));
 	}
 	
 	@Test
@@ -116,9 +118,9 @@ public class TestDataStoreApi {
 		IntegerData data = mock(IntegerData.class);
 		Delimiters delimiter = mock(Delimiters.class);
 		
-		assertThrows(IllegalArgumentException.class, () -> {
-			dataStore.write(data, null, delimiter);
-		});
+		// Verify write() returns false instead of exception
+		// for null output parameter
+		assertFalse(dataStore.write(data, null, delimiter));
 	}
 	
 	@Test
@@ -129,9 +131,8 @@ public class TestDataStoreApi {
 		// Mock dependency
 		DataInputSource input = mock(DataInputSource.class);
 				
-		assertThrows(IllegalArgumentException.class, () -> {
-			dataStore.read(input);
-		});
+		// Verify read() return null for unsupported input source
+		assertNull(dataStore.read(input));
 	}
 	
 	@Test
@@ -144,8 +145,7 @@ public class TestDataStoreApi {
 		IntegerData data = mock(IntegerData.class);
 		Delimiters delimiter = mock(Delimiters.class);
 		
-		assertThrows(IllegalArgumentException.class, () -> {
-			dataStore.write(data, output, delimiter);
-		});
+		// Verify write() returns false for unsupported output destination sources
+		assertFalse(dataStore.write(data, output, delimiter));
 	}
 }

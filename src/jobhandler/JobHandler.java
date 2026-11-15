@@ -20,16 +20,26 @@ public class JobHandler {
 		this.computeProcess = computeProcess;
 	}
 	
-	public void runJob(DataInputSource inputSource, DataOutputDestination outputDestination, Delimiters delimiter) {
+	public boolean runJob(DataInputSource inputSource, DataOutputDestination outputDestination, Delimiters delimiter) {
 		// Validates the Delimiters, InputSource and OutputDestination are not null
 		if (inputSource == null || outputDestination == null || delimiter == null) {
 			throw new IllegalArgumentException("Delmiter, InputSource and/or OutputDestination cannot be null");
 		}
+		// Read input data
 		IntegerData input = dataStore.read(inputSource);
+		// Check and stop if reading failed
+		if (input == null) {
+			return false;
+		}
 		
+		// Perform computation
 		IntegerData result = computeProcess.compute(input);
+		// Check and stop if computation failed
+		if (result == null) {
+			return false;
+		}
 		
-		dataStore.write(result, outputDestination, delimiter);
+		return dataStore.write(result, outputDestination, delimiter);
 	}
 }
 
