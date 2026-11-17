@@ -20,7 +20,7 @@ public class InMemoryDataStore implements DataStoreApi{
 	}
 
 	@Override
-	public void write(IntegerData data, DataOutputDestination output, Delimiters delimiter) {
+	public boolean write(IntegerData data, DataOutputDestination output, Delimiters delimiter) {
 		
 		// Casts the general DataOutputDestination
 		// to the InMemoryOutput for tests only
@@ -31,6 +31,9 @@ public class InMemoryDataStore implements DataStoreApi{
 		for (Integer integer : data.getIntegers()) {
 			outputDestination.getOutput().add(integer.toString());
 		}
+		
+		// Return true when writing completes successfully
+		return true;
 	}
 	
 }
