@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import emptyimplements.ComputeEngineApiImpl;
+import emptyimplements.MultiThreadedComputeEngineApiImpl;
 import emptyimplements.ComputeProcessApiImpl;
 import emptyimplements.DataStoreApiImpl;
 import jobhandler.JobHandler;
@@ -35,7 +35,7 @@ public class TestMultiUser {
 		
 		JobHandler job = new JobHandler(dataStore, computeProcess);
 		
-		coordinator = new ComputeEngineApiImpl(job);
+		coordinator = new MultiThreadedComputeEngineApiImpl(job);
 	}
 
 	@Test
