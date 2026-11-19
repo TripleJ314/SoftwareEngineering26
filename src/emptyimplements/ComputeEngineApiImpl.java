@@ -4,10 +4,6 @@ import jobhandler.JobHandler;
 import networkapi.ComputeEngineApi;
 import networkapi.JobRequest;
 import networkapi.JobResponse;
-import networkapi.JobResponseCode;
-import networkapi.JobResponseImpl;
-import processapi.DataInputSource;
-import processapi.DataOutputDestination;
 
 public class ComputeEngineApiImpl implements ComputeEngineApi {
 	
