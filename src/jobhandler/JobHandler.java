@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import conceptualapi.ComputeProcessApi;
@@ -16,6 +15,7 @@ import processapi.IntegerData;
 import processapi.ListIntegerData;
 
 public class JobHandler {
+	
 	private final DataStoreApi dataStore;
 	private final ComputeProcessApi computeProcess;
 	
@@ -53,11 +53,13 @@ public class JobHandler {
 	}
 	
 	// Run a job using multiple threads to compute the integers in parallel
-	public boolean runJobParallel(DataInputSource inputSource, DataOutputDestination outputDestination, Delimiters delimiter) {
+	public boolean runJobParallel(DataInputSource inputSource, DataOutputDestination outputDestination, Delimiters delimiter, ExecutorService threadPool) {
+		
 		// Validates the parameters(Delimiters, InputSource and OutputDestination) are not null
-		if (inputSource == null || outputDestination == null || delimiter == null) {
-			throw new IllegalArgumentException("Delmiter, InputSource and/or OutputDestination cannot be null");
+		if (inputSource == null || outputDestination == null || delimiter == null || threadPool == null) {
+			throw new IllegalArgumentException("ThreadPool, Delmiter, InputSource and/or OutputDestination cannot be null");
 		}
+		
 		// Read input data once before beginning parallel computation
 		// Prevents multiple threads from reading the same input source
 		IntegerData input = dataStore.read(inputSource);
@@ -75,15 +77,12 @@ public class JobHandler {
 			return false;
 		}
 		
-		// Create a fixed number pool of threads
-		ExecutorService threadPool = Executors.newFixedThreadPool(4);
+		// Store computation in original input order
+		// Future allows the retrieved results after thread submissions
+		// to be stored in their original ordering
+		List<Future<IntegerData>> futures = new ArrayList<>();
 		
 		try {
-			// Store computation in original input order
-			// Future allows the retrieved results after thread submissions
-			// to be stored in their original ordering
-			List<Future<IntegerData>> futures = new ArrayList<>();
-			
 			// 
 			for (Integer num : numbers) {
 				// Wrap the current integers into IntegerData implementation
@@ -109,6 +108,10 @@ public class JobHandler {
 				
 				// Validate the computation returned not null results
 				if (result == null || result.getIntegers() == null || result.getIntegers().size() != 1) {
+					// Cancel unfinished tasks belonging to this job
+					cancelThreads(futures);
+					
+					// Report failure
 					return false;
 				}
 				// Add the computed	integer to the results list
@@ -121,18 +124,35 @@ public class JobHandler {
 			
 			// Write the completed results to the specified output destination
 			return dataStore.write(outputData, outputDestination, delimiter);
+			
 		} catch (InterruptedException e) {
+			// Cancel unfinished tasks belonging to this job
+			cancelThreads(futures);
+			
 			// Report failed computations
 			Thread.currentThread().interrupt();
+			
+			// Report job failure
 			return false;
 			
 		} catch (ExecutionException | RuntimeException e) {
+			// Cancel unfinished tasks belonging to this job
+			cancelThreads(futures);
+			
 			// Report failed computations
 			return false;
+		}
+	}
+	
+	private void cancelThreads(List<Future<IntegerData>> futures) {
+		// Loop through all submitted computation tasks
+		for (Future<IntegerData> future : futures) {
 			
-		} finally {
-			// Always request shutdown of ThreadPool after job finishes
-			threadPool.shutdownNow();
+			// cancel the tasks still waiting to running
+			if (!future.isDone()) {
+				// true request interruption is the task is running
+				future.cancel(true);
+			}
 		}
 	}
 }

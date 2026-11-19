@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,15 @@ public class TestMultiUser {
 		JobHandler job = new JobHandler(dataStore, computeProcess);
 		
 		coordinator = new MultiThreadedComputeEngineApiImpl(job);
+	}
+	
+	@AfterEach
+	public void shutDownComputeEngine() {
+		// Shut down the shared executor after each test finishes
+		if (coordinator instanceof MultiThreadedComputeEngineApiImpl) {
+			MultiThreadedComputeEngineApiImpl engine = (MultiThreadedComputeEngineApiImpl) coordinator;
+			engine.shutDown();
+		}
 	}
 
 	@Test

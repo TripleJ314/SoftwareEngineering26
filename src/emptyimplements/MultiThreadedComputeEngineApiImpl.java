@@ -1,18 +1,24 @@
 package emptyimplements;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import jobhandler.JobHandler;
 import networkapi.ComputeEngineApi;
 import networkapi.JobRequest;
 import networkapi.JobResponse;
-import networkapi.JobResponseCode;
-import networkapi.JobResponseImpl;
-import processapi.DataInputSource;
-import processapi.DataOutputDestination;
 
 public class MultiThreadedComputeEngineApiImpl implements ComputeEngineApi{
 	
 	// Stores the JobHandler
 	private final JobHandler job;
+	
+	// Maximum number of workers in the thread pool
+	private static final int MAX_THREADS = 4;
+	
+	// Store the thread pool used for parallel computation
+	// Reusing the pool prevents each job from creating its own workers
+	private final ExecutorService threadPool;
 	
 	// Constructor for connecting the JobHandler to the Network api.
 	public MultiThreadedComputeEngineApiImpl(JobHandler job) {
@@ -20,34 +26,24 @@ public class MultiThreadedComputeEngineApiImpl implements ComputeEngineApi{
 			throw new IllegalArgumentException("JobHandler cannot be null");
 		}
 		this.job = job;
+		
+		// Create the fixed thread pool once so concurrent job requests share
+		// the same worker limit instead of creating separate thread pools
+		this.threadPool = Executors.newFixedThreadPool(MAX_THREADS);
 	}
 	@Override
 	public JobResponse runJob(JobRequest request) {
-		try {
-			// Check request and input/output sources are valid
-			if (request == null 
-					|| !(request.getInputSource() instanceof DataInputSource)
-					|| !(request.getOutputDest() instanceof DataOutputDestination)) {
-				return new JobResponseImpl(JobResponseCode.INVALID_INPUT);
-			}
-			// Convert the Network APi sources to Process API source type
-			DataInputSource input = (DataInputSource) request.getInputSource();
-			DataOutputDestination output = (DataOutputDestination) request.getOutputDest();
-			
-			// Run job with JobHandler using the parallel computation method in JobHandler
-			boolean status = job.runJobParallel(input, output, request.getDelimiter());
-			
-			// Return failure if reading, computation or writing failed
-			if (status == false) {
-				return new JobResponseImpl(JobResponseCode.FAILURE);
-			}
-			// Returns success response after parallel jobs finish
-			return new JobResponseImpl(JobResponseCode.SUCCESS);
-			
-		} catch (RuntimeException e) {
-			// Return failure response if any step in the jobs execution fails
-			return new JobResponseImpl(JobResponseCode.FAILURE);
-		}
+		// Lambda supplies the shared executor to runJobParallel()
+		// which takes an additional parameter
+		return ComputeEngineJobRunner.run(request, 
+				(input, output, delimiter) -> 
+				job.runJobParallel(input, output, delimiter, threadPool));
+	}
+	
+	public void shutDown() {
+		// Stops accepting new tasks and allows previously submitted threads to finish
+		// shutdown() is managed here because the engine owns the shared pool
+		threadPool.shutdown();
 	}
 
 }
