@@ -1,6 +1,6 @@
-# Software Engineering Project Starter Code
-
-The compute engine will find the largest prime number that is less than a given positive integer input n. The system will evaluate integers from 2 up to n-1. The integers are classified as prime if greater than 1, and no positive divisors other than 1 and n.
+# Software Engineering Project, Fall 2026
+# Compute Engine
+The compute engine will find the largest prime number that is less than a given positive integer input(n). The system will evaluate integers from 2 up to n-1. The integers are classified as prime if greater than 1, and no positive divisors other than 1 and n.
 
 Example:
 
@@ -9,7 +9,15 @@ For the given input: 10:
 The system will output: 7
 
 Cases:
-For inputs equal to or less than 2
+For input values equal to or less than 2, the returned value will be 0, as no prime exists
 
-returned value will be 0, as no prime exists
+# Multi-Threaded Compute Engine
+
+The compute engine supports both single-threaded and multithreaded execution.
+
+The multithreaded implementation uses a fixed thread pool to execute multiple computations concurrently.
+
+The multithreaded compute engine uses a maximum of 4 worker threads per engine instance.
+
+
 <img width="900" height="484" alt="Screenshot (39)" src="https://github.com/user-attachments/assets/4e9f16f5-2372-40d0-997b-f43e46657f67" />
